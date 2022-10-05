@@ -19,6 +19,38 @@ class FaceSystem:
         #firstImg = Label(self.root,image=self.photoimg)
         #firstImg.place(x=0,y=0,width=500,height=300)
 
+        # Button Student Details
+        b1 = CTkButton(root,text="Student Details")
+        b1.pack()
+
+        # Button Face Detector
+
+        b2 = CTkButton(root,text="Face Detector")
+        b2.pack()
+
+        # Attendance
+        b3 = CTkButton(root,text="Attendance")
+        b3.pack()
+
+        # Help Desk
+
+        b4 = CTkButton(root,text="Help Desk")
+        b4.pack()
+
+        #Train Data
+        b5 = CTkButton(root,text="Train Data")
+        b5.pack()
+        
+        #Photos
+        b6 = CTkButton(root,text="Photos")
+        b6.pack()
+
+        #Developer
+        b7 = CTkButton(root,text="Developer")
+        b7.pack()
+        
+    
+
 
 
 #To check which file is running
