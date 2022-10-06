@@ -1,6 +1,6 @@
 from customtkinter import *
 # from tkinter import*
-from tkinter import ttk
+from tkinter import Label, ttk
 from PIL import Image,ImageTk
 
 class FaceSystem:
@@ -19,6 +19,9 @@ class FaceSystem:
         #firstImg = Label(self.root,image=self.photoimg)
         #firstImg.place(x=0,y=0,width=500,height=300)
 
+
+        title1 = CTkLabel(root,text="Face Recogintion System")
+        title1.pack()
         # Button Student Details
         b1 = CTkButton(root,text="Student Details")
         b1.pack()
