@@ -161,16 +161,16 @@ class Student:
 
         #update
 
-        updateBtn = Button(btnFrame,text="Update")
+        updateBtn = Button(btnFrame,text="Update",command=self.updateData)
         updateBtn.grid(row=0,column=1,padx=3)
 
         #delete
 
-        deleteBtn = Button(btnFrame,text="Delete")
+        deleteBtn = Button(btnFrame,text="Delete",command=self.deleteData)
         deleteBtn.grid(row=0,column=2,padx=3)
 
         # Reset
-        resetBtn = Button(btnFrame,text="Reset")
+        resetBtn = Button(btnFrame,text="Reset",command=self.resetData)
         resetBtn.grid(row=0,column=3,padx=3)
 
         #take photo btn
@@ -258,6 +258,7 @@ class Student:
         self.studentTable.column("Photo",width=100)
 
         self.studentTable.pack(fill = BOTH,expand=1)
+        self.studentTable.bind("<ButtonRelease>",self.getCursor)
         self.fetchData()
         
 
@@ -311,6 +312,96 @@ class Student:
             conn.commit()
         
         conn.close()
+
+    #Function to show values after clicking    
+
+    def getCursor(self,event=""):
+        cursorFocus = self.studentTable.focus()
+        content=self.studentTable.item(cursorFocus)
+        data = content["values"]
+
+        self.department.set(data[0]),
+        self.course.set(data[1]), 
+        self.year.set(data[2]), 
+        self.semester.set(data[3]), 
+        self.studentID.set(data[4]), 
+        self.studentName.set(data[5]), 
+        self.studentPhone.set(data[6]), 
+        self.studentTeacher.set(data[7]), 
+        self.gender.set(data[8]), 
+        self.photo.set(data[9]) 
+
+    #Functionality for update
+    def updateData(self):
+
+        if self.department.get()=="Select Department" or self.studentName.get()=="" or self.studentID.get()=="":
+            messagebox.showerror("Error","All Fields are required",parent=self.root)
+        else:
+            try:
+                update = messagebox.askyesno("Update","Do you want to update details",parent=self.root)
+                if update>0:
+                    conn = mysql.connector.connect(host="localhost",username="root",password="99Love$$",database="FaceAttendance")
+                    mycursor = conn.cursor()
+                    mycursor.execute("Update studen set department = %s,Course=%s,Year=%s,Semester=%s,Name=%s,Phone=%s,Teacher=%s,Gender=%s,Photo=%s where studentID=%s",(
+                    self.department.get(),
+                    self.course.get(), 
+                    self.year.get(), 
+                    self.semester.get(), 
+                    self.studentName.get(), 
+                    self.studentPhone.get(), 
+                    self.studentTeacher.get(), 
+                    self.gender.get(), 
+                    self.photo.get(), 
+                    self.studentID.get() ))
+
+                else:
+                    if not update:
+                        return 
+                messagebox.showinfo("Success","Students details updated sucesfully",parent=self.root)        
+                conn.commit()
+                self.fetchData()
+                conn.close()
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}",parent=self.root)    
+
+
+    #Functionlidty delete
+    def deleteData(self):
+        if self.studentID.get()=="":
+            messagebox.showerror("Error","Student Id must be required")
+        else:
+            try:
+                delete = messagebox.askyesno("Student Delete Page","Do you want to delete this student?",parent=self.root)
+                if delete>0:
+                    conn = mysql.connector.connect(host="localhost",username="root",password="99Love$$",database="FaceAttendance")
+                    mycursor = conn.cursor()
+                    sql = 'delete from studen where studentid= %s'
+                    val= (self.studentID.get(),)
+                    mycursor.execute(sql,val)
+                else:
+                    if not delete:
+                        return 
+                conn.commit()
+                self.fetchData()
+                conn.close()
+                messagebox.showinfo("Delete","Successfully deleted student values",parent=self.root)
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to {str(es)}",parent=self.root)  
+
+    #Reset button functionality
+    def resetData(self):
+        self.department.set("Select Department"),
+        self.course.set("Select Course"), 
+        self.year.set("Select Year"), 
+        self.semester.set("Select Semester"), 
+        self.studentID.set(""), 
+        self.studentName.set(""), 
+        self.studentPhone.set(""), 
+        self.studentTeacher.set(""), 
+        self.gender.set("Male"), 
+        self.photo.set("No") 
+
+
 
 
 
