@@ -3,6 +3,7 @@ from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
 
+
 class Student:
     def __init__(self,root):
         self.root = root
@@ -227,6 +228,7 @@ class Student:
         self.studentTable.heading("Gender",text="Gender")
         self.studentTable.heading("Photo",text="Photo Status")
         self.studentTable["show"] = "headings"
+        #Making width of colums
         self.studentTable.column("Dep",width=100)
         self.studentTable.column("Course",width=100)
         self.studentTable.column("Year",width=100)

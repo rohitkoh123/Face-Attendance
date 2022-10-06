@@ -1,7 +1,8 @@
 from customtkinter import *
-# from tkinter import*
+from tkinter import*
 from tkinter import Label, ttk
 from PIL import Image,ImageTk
+from student import Student
 
 class FaceSystem:
     def __init__(self,root):
@@ -23,7 +24,7 @@ class FaceSystem:
         title1 = CTkLabel(root,text="Face Recogintion System")
         title1.pack()
         # Button Student Details
-        b1 = CTkButton(root,text="Student Details")
+        b1 = CTkButton(root,text="Student Details",command=self.studentDetails)
         b1.pack()
 
         # Button Face Detector
@@ -52,6 +53,10 @@ class FaceSystem:
         b7 = CTkButton(root,text="Developer")
         b7.pack()
         
+    #Function Button
+    def studentDetails(self):
+        self.newWindow=Toplevel(self.root)
+        self.app = Student(self.newWindow) 
     
 
 
