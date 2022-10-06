@@ -2,6 +2,7 @@ from customtkinter import *
 from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
+from tkinter import messagebox
 
 
 class Student:
@@ -9,6 +10,20 @@ class Student:
         self.root = root
         self.root.geometry('1920x1200')
         self.root.title('Face Recoginition System')
+
+        #Variables
+        self.department = StringVar()
+        self.course = StringVar()
+        self.year = StringVar()
+        self.semester = StringVar()
+        self.studentID = StringVar()
+        self.studentName = StringVar()
+        self.studentPhone = StringVar()
+        self.studentTeacher = StringVar()
+        self.gender = StringVar()
+        self.photo = StringVar()
+
+
 
         title1 = CTkLabel(root,text="Student")
         title1.pack()
@@ -37,7 +52,7 @@ class Student:
         depLabel = Label(currentCourseFrame,text="Departmetnt",bg="dark grey")
         depLabel.grid(row=0,column=0,sticky=W,pady=20,padx=2)
 
-        depCombo = ttk.Combobox(currentCourseFrame,state="readonly")
+        depCombo = ttk.Combobox(currentCourseFrame,state="readonly",textvariable=self.department)
         depCombo["values"] = ("Select Department","Computer Science","Mechanical")
         depCombo.current(0)
         depCombo.grid(row=0,column=1,sticky=W)
@@ -47,7 +62,7 @@ class Student:
         courseLabel = Label(currentCourseFrame,text="Course",bg="dark grey")
         courseLabel.grid(row=0,column=2,sticky=W)
 
-        courseCombo = ttk.Combobox(currentCourseFrame,state="readonly")
+        courseCombo = ttk.Combobox(currentCourseFrame,state="readonly",textvariable=self.course)
         courseCombo["values"] = ("Select Course","First Year","Second Year","Third Year","Fourth Year")
         courseCombo.current(0)
         courseCombo.grid(row=0,column=3,sticky=W)
@@ -58,7 +73,7 @@ class Student:
         yearLabel = Label(currentCourseFrame,text="Year",bg="dark grey")
         yearLabel.grid(row=1,column=0,sticky=W)
 
-        yearCombo = ttk.Combobox(currentCourseFrame,state="readonly")
+        yearCombo = ttk.Combobox(currentCourseFrame,state="readonly",textvariable=self.year)
         yearCombo["values"] = ("Select Year","2020-2021","2021-2022","2022-2023","2023-2024")
         yearCombo.current(0)
         yearCombo.grid(row=1,column=1,padx=2,sticky=W)
@@ -70,7 +85,7 @@ class Student:
         semesterLabel = Label(currentCourseFrame,text="Semester",bg="dark grey")
         semesterLabel.grid(row=1,column=2,sticky=W)
 
-        semesterCombo = ttk.Combobox(currentCourseFrame,state="readonly")
+        semesterCombo = ttk.Combobox(currentCourseFrame,state="readonly",textvariable=self.semester)
         semesterCombo["values"] = ("Select Semester","First Semester","Second Semester","Third Semester","Fourth Semester")
         semesterCombo.current(0)
         semesterCombo.grid(row=1,column=3,padx=2,sticky=W)
@@ -86,7 +101,7 @@ class Student:
         studentIDlabel = Label(studentFrame,text="Student ID",bg="dark grey")
         studentIDlabel.grid(row=0,column=0,padx=2,pady=20,sticky=W)
 
-        studentIDentry= Entry(studentFrame,bg="dark grey",width=16)
+        studentIDentry= Entry(studentFrame,bg="dark grey",width=16,textvariable=self.studentID)
         studentIDentry.grid(row=0,column=1,sticky=W)
 
         # student Name
@@ -94,7 +109,7 @@ class Student:
         studentNamelabel = Label(studentFrame,text="Student Name",bg="dark grey")
         studentNamelabel.grid(row=0,column=2,padx=2,pady=20,sticky=W)
 
-        studentNameentry= Entry(studentFrame,bg="dark grey",width=16)
+        studentNameentry= Entry(studentFrame,bg="dark grey",width=16,textvariable=self.studentName)
         studentNameentry.grid(row=0,column=3,sticky=W)
 
         
@@ -103,7 +118,7 @@ class Student:
         studentphonelabel = Label(studentFrame,text="Phone Number",bg="dark grey")
         studentphonelabel.grid(row=1,column=0,padx=2,pady=20,sticky=W)
 
-        studentphoneentry= Entry(studentFrame,bg="dark grey",width=16)
+        studentphoneentry= Entry(studentFrame,bg="dark grey",width=16,textvariable=self.studentPhone)
         studentphoneentry.grid(row=1,column=1,sticky=W)
 
         # Teacher
@@ -111,25 +126,25 @@ class Student:
         studentTeacherlabel = Label(studentFrame,text="Teacher Name",bg="dark grey")
         studentTeacherlabel.grid(row=1,column=2,padx=2,pady=20,sticky=W)
 
-        studentTeacherentry= Entry(studentFrame,bg="dark grey",width=16)
+        studentTeacherentry= Entry(studentFrame,bg="dark grey",width=16,textvariable=self.studentTeacher)
         studentTeacherentry.grid(row=1,column=3,sticky=W)
 
         #Gender
-        gender =StringVar()
+        
         studentGenderlabel = Label(studentFrame,text="Gender",bg="dark grey")
         studentGenderlabel.grid(row=2,column=0,sticky=W)
 
-        MaleRadio = Radiobutton(studentFrame,variable=gender,text="Male",value="Male")
+        MaleRadio = Radiobutton(studentFrame,text="Male",value="Male",variable=self.gender)
         MaleRadio.grid(row=2,column=1,sticky=W)
 
-        FemaleRadio = Radiobutton(studentFrame,variable=gender,text="Female",value="Female")
+        FemaleRadio = Radiobutton(studentFrame,text="Female",value="Female",variable=self.gender)
         FemaleRadio.grid(row=2,column=2,sticky=W)
 
 
-        btn1 = Radiobutton(studentFrame,text="Take photo sample",value="Yes")
+        btn1 = Radiobutton(studentFrame,text="Take photo sample",value="Yes",variable=self.photo)
         btn1.grid(row=3,column=0)
 
-        btn2 = Radiobutton(studentFrame,text="No photo sample",value="Yes")
+        btn2 = Radiobutton(studentFrame,text="No photo sample",value="No",variable=self.photo)
         btn2.grid(row=3,column=1)
 
         #Button Frame
@@ -139,7 +154,7 @@ class Student:
 
         #Save button
 
-        saveBtn = Button(btnFrame,text="Save")
+        saveBtn = Button(btnFrame,text="Save",command=self.addData)
         saveBtn.grid(row=0,column=0,padx=3)
 
         #update
@@ -242,6 +257,17 @@ class Student:
 
         self.studentTable.pack(fill = BOTH,expand=1)
         
+
+    #Functions for adding Data
+
+    def addData (self):
+        if self.department.get()=="Select Department" or self.studentName.get()=="" or self.studentID.get()=="":
+            messagebox.showerror("Error","All Fields are required",parent=self.root)
+        else:
+            pass
+
+
+
 
 
 
