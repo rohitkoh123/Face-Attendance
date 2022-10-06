@@ -3,6 +3,8 @@ from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
 from tkinter import messagebox
+import mysql.connector
+
 
 
 class Student:
@@ -256,6 +258,7 @@ class Student:
         self.studentTable.column("Photo",width=100)
 
         self.studentTable.pack(fill = BOTH,expand=1)
+        self.fetchData()
         
 
     #Functions for adding Data
@@ -264,8 +267,50 @@ class Student:
         if self.department.get()=="Select Department" or self.studentName.get()=="" or self.studentID.get()=="":
             messagebox.showerror("Error","All Fields are required",parent=self.root)
         else:
-            pass
+            try:
 
+                #insert data
+                conn = mysql.connector.connect(host="localhost",username="root",password="99Love$$",database="FaceAttendance")
+                mycursor = conn.cursor()
+                mycursor.execute("insert into studen values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                (
+                self.department.get(),
+                self.course.get(), 
+                self.year.get(), 
+                self.semester.get(), 
+                self.studentID.get(), 
+                self.studentName.get(), 
+                self.studentPhone.get(), 
+                self.studentTeacher.get(), 
+                self.gender.get(), 
+                self.photo.get() )
+                )
+                conn.commit()
+                self.fetchData()
+                conn.close()
+                messagebox.showinfo("Success","Student Details have been added",parent=self.root)
+
+            except Exception as es:
+                messagebox.showerror("Eroor",f"Due to {str(es)}",parent=self.root)
+
+
+
+    #Function to put data on our table
+
+    def fetchData(self):
+        conn = mysql.connector.connect(host="localhost",username="root",password="99Love$$",database="FaceAttendance")
+        mycursor = conn.cursor()
+        mycursor.execute('select * from studen')
+        data = mycursor.fetchall()
+
+        if len(data)!=0:
+            #making table empty before putting
+            self.studentTable.delete(*self.studentTable.get_children())
+            for i in data:
+                self.studentTable.insert("",END,values=i)
+            conn.commit()
+        
+        conn.close()
 
 
 
