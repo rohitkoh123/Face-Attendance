@@ -4,7 +4,7 @@ from tkinter import ttk
 from PIL import Image,ImageTk
 from tkinter import messagebox
 import mysql.connector
-
+import cv2
 
 
 class Student:
@@ -175,7 +175,7 @@ class Student:
 
         #take photo btn
 
-        photoBtn = Button(btnFrame,text="Take Photo")
+        photoBtn = Button(btnFrame,text="Take Photo",command=self.generateDataset)
         photoBtn.grid(row=0,column=4,padx=3)
 
         #update photo btn
@@ -401,6 +401,68 @@ class Student:
         self.gender.set("Male"), 
         self.photo.set("No") 
 
+    #Take photo sample
+    def generateDataset(self):
+        if self.department.get()=="Select Department" or self.studentName.get()=="" or self.studentID.get()=="":
+            messagebox.showerror("Error","All Fields are required",parent=self.root)
+        else:
+            try:
+                conn = mysql.connector.connect(host="localhost",username="root",password="99Love$$",database="FaceAttendance")
+                mycursor = conn.cursor()
+                mycursor.execute("select * from studen")
+                myresult =mycursor.fetchall()
+                id = 0
+                for x in myresult:
+                    id+=1
+                    mycursor.execute("Update studen set department = %s,Course=%s,Year=%s,Semester=%s,Name=%s,Phone=%s,Teacher=%s,Gender=%s,Photo=%s where studentID=%s",(
+                    self.department.get(),
+                    self.course.get(), 
+                    self.year.get(), 
+                    self.semester.get(), 
+                    self.studentName.get(), 
+                    self.studentPhone.get(), 
+                    self.studentTeacher.get(), 
+                    self.gender.get(), 
+                    self.photo.get(), 
+                    self.studentID.get()==id+1 ))
+                conn.commit()
+                self.fetchData()
+                self.resetData()
+                conn.close()
+
+                #using predefined data 
+
+                faceClassifier = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
+
+                def faceCropped(img):
+                    grayimg = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+                    faces = faceClassifier.detectMultiScale(grayimg,1.3,5)
+
+                    for (x,y,w,h) in faces:
+                        faceCropped=img[y:y+h,x:x+w]
+                        return faceCropped
+                # 0- webcam
+                capture = cv2.VideoCapture(0)
+                imgid = 0
+                while True:
+                    ret,myframe= capture.read()
+                    if faceCropped(myframe) is not None:
+                        imgid+=1
+                        face = cv2.resize(faceCropped(myframe),(450,450))
+                        face = cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
+                        filePath = "data/name"+str(id)+"."+str(imgid)+".jpg"
+                        cv2.imwrite(filePath,1)
+                        cv2.putText(face,str(imgid),(50,50),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),2)
+                        cv2.imshow("Cropped Face",face)
+                    
+                    if  cv2.waitKey(1)==13 or int(imgid) ==100:
+                        break
+                capture.release()
+                cv2.destroyAllWindows()
+                messagebox.showinfo("Result","Generating dataset completed")
+
+            except Exception as es:
+                messagebox.showerror("Error",f"Due to: {str(es)}",parent = self.root)
 
 
 
