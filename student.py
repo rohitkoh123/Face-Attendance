@@ -425,6 +425,7 @@ class Student:
                     self.gender.get(), 
                     self.photo.get(), 
                     self.studentID.get()==id+1 ))
+                
                 conn.commit()
                 self.fetchData()
                 self.resetData()
@@ -445,17 +446,17 @@ class Student:
                 capture = cv2.VideoCapture(0)
                 imgid = 0
                 while True:
-                    ret,myframe= capture.read()
+                    ret,myframe = capture.read()
                     if faceCropped(myframe) is not None:
                         imgid+=1
                         face = cv2.resize(faceCropped(myframe),(450,450))
                         face = cv2.cvtColor(face,cv2.COLOR_BGR2GRAY)
                         filePath = "data/name"+str(id)+"."+str(imgid)+".jpg"
-                        cv2.imwrite(filePath,1)
+                        cv2.imwrite(filePath,face)
                         cv2.putText(face,str(imgid),(50,50),cv2.FONT_HERSHEY_SIMPLEX,2,(0,255,0),2)
                         cv2.imshow("Cropped Face",face)
                     
-                    if  cv2.waitKey(1)==13 or int(imgid) ==100:
+                    if cv2.waitKey(1)==13 or int(imgid) ==100:
                         break
                 capture.release()
                 cv2.destroyAllWindows()
