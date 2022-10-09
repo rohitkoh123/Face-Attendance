@@ -3,6 +3,7 @@ from tkinter import*
 from tkinter import Label, ttk
 from PIL import Image,ImageTk
 from student import Student
+import os
 
 class FaceSystem:
     def __init__(self,root):
@@ -46,7 +47,7 @@ class FaceSystem:
         b5.pack()
         
         #Photos
-        b6 = CTkButton(root,text="Photos")
+        b6 = CTkButton(root,text="Photos",command=self.openData)
         b6.pack()
 
         #Developer
@@ -58,7 +59,9 @@ class FaceSystem:
         self.newWindow=Toplevel(self.root)
         self.app = Student(self.newWindow) 
     
-
+    #To open as we can't os.startfile
+    def openData(self):
+        os.system("open Data")
 
 
 #To check which file is running

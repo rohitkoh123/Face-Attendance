@@ -88,7 +88,7 @@ class Student:
         semesterLabel.grid(row=1,column=2,sticky=W)
 
         semesterCombo = ttk.Combobox(currentCourseFrame,state="readonly",textvariable=self.semester)
-        semesterCombo["values"] = ("Select Semester","First Semester","Second Semester","Third Semester","Fourth Semester")
+        semesterCombo["values"] = ("Select Semester","First Semester","Second Semester","Third Semester","Fourth Semester","Fifth Semester","Sixth Semester","Seventh Semester","Eighth Semster")
         semesterCombo.current(0)
         semesterCombo.grid(row=1,column=3,padx=2,sticky=W)
 
