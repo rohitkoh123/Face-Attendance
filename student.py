@@ -1,10 +1,10 @@
-from customtkinter import *
 from tkinter import*
 from tkinter import ttk
 from PIL import Image,ImageTk
 from tkinter import messagebox
-import mysql.connector
 import cv2
+import mysql.connector
+
 
 
 class Student:
@@ -27,11 +27,11 @@ class Student:
 
 
 
-        title1 = CTkLabel(root,text="Student")
+        title1 = Label(root,text="Student")
         title1.pack()
 
         #Frame
-        mainFrame = CTkFrame(root)
+        mainFrame = Frame(root)
         mainFrame.place(x=20,y=50,width=1400,height=700)
 
         #LeftFrame
@@ -466,28 +466,7 @@ class Student:
                 messagebox.showerror("Error",f"Due to: {str(es)}",parent = self.root)
 
 
-
-
-
-
-
-
-
-
-        
-
-
-        
-       
-
-
-
-
-        
-        
-
-
 if __name__=="__main__":
-    root = CTk()
+    root = Tk()
     Obj = Student(root)
     root.mainloop()      
