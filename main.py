@@ -4,6 +4,7 @@ from tkinter import Label, ttk
 from PIL import Image,ImageTk
 from student import Student
 import os
+from train import Train
 
 class FaceSystem:
     def __init__(self,root):
@@ -43,7 +44,7 @@ class FaceSystem:
         b4.pack()
 
         #Train Data
-        b5 = CTkButton(root,text="Train Data")
+        b5 = CTkButton(root,text="Train Data",command=self.trainData)
         b5.pack()
         
         #Photos
@@ -63,6 +64,10 @@ class FaceSystem:
     def openData(self):
         os.system("open Data")
 
+    #Function for train data
+    def trainData(self):
+        self.newWindow = Toplevel(self.root)
+        self.app = Train(self.newWindow)
 
 #To check which file is running
 
